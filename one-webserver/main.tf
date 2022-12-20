@@ -25,7 +25,7 @@ resource "aws_instance" "aws01_example" {
   user_data = <<-EOF
               #!/bin/bash
               echo "Hello, World" > index.html
-              nohup busybox httpd -f -p 8080 &
+              nohup busybox httpd -f -p ${var.server_port} &
               EOF
  
  # tags 추가 
@@ -39,8 +39,8 @@ resource "aws_security_group" "instance" {
   name = "aws01-terraform-example-instance"
  
   ingress {
-    from_port   = 8080 #출발포트 
-    to_port     = 8080 #도착 포트 
+    from_port   = var.server_port #출발포트 
+    to_port     = var.server_port #도착 포트 
     protocol    = "tcp" # 프로토콜
     cidr_blocks = ["0.0.0.0/0"] #송신지 
   }
